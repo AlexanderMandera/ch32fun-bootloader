@@ -5,6 +5,7 @@
 #define FUNCONF_USE_HSE 1
 
 #define DEBUG
+#define FUNCONF_PLL_MULTIPLIER 12 // 8MHz * 12 = 96MHz
 
 #define FUNCONF_USE_DEBUGPRINTF 1
 //#define FUNCONF_DEBUGPRINTF_TIMEOUT (1<<31) // Wait for a very very long time.

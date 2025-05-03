@@ -29,7 +29,7 @@ int FLASH_ErasePage_Fast(uint32_t pageAddress)
     return 0;
 }
 
-void FLASH_ProgramPage_Fast(uint32_t pageAddress, uint8_t *data)
+void FLASH_ProgramPage_Fast(uint32_t pageAddress, uint32_t *data)
 {
     uint8_t size = 64;
 

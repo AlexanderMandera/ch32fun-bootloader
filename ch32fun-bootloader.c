@@ -122,14 +122,16 @@ void handleData() {
                 FLASH_Unlock_Fast();
                 FLASH_ErasePage_Fast(programAddress);
                 printf("CMD_WRITE: Page erased at address 0x%08lX.\n", programAddress);
-                FLASH_ProgramPage_Fast(programAddress, (uint8_t*)programBuffer);
+                FLASH_ProgramPage_Fast(programAddress, (uint32_t*)programBuffer);
                 printf("CMD_WRITE: Page programmed at address 0x%08lX.\n", programAddress);
-                codeLength -= 256;
-                for(int i = 0; i < codeLength; i++) {
-                    programBuffer[i] = programBuffer[i + 256];
+                if(codeLength >= 256) {
+                    codeLength -= 256;
+                    for(int i = 0; i < codeLength; i++) {
+                        programBuffer[i] = programBuffer[i + 256];
+                    }
+                    programAddress += 0x100;
+                    printf("CMD_WRITE: Remaining buffer length: %ld. Next address: 0x%08lX.\n", codeLength, programAddress);
                 }
-                programAddress += 0x100;
-                printf("CMD_WRITE: Remaining buffer length: %ld. Next address: 0x%08lX.\n", codeLength, programAddress);
             }
             status = 0x00; // Success
             break;
@@ -177,12 +179,13 @@ int main()
 
 	funDigitalWrite( PA3, FUN_LOW );
 
+    printf("Using frequency %d MHz\n", FUNCONF_SYSTEM_CORE_CLOCK / 1000000);
     printf("Started USB\n");
 
 	while(1)
 	{
         printf("lrx = %d\n", lrx);
-        Delay_Ms(1000);
+        Delay_Ms(500);
         if(lrx > 0) {
             // Handle the received data
             handleData();
