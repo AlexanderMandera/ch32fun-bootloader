@@ -33,7 +33,7 @@ void FLASH_ProgramPage_Fast(uint32_t pageAddress, uint8_t *data)
 {
     uint8_t size = 64;
 
-    Page_Address &= 0xFFFFFF00;
+    pageAddress &= 0xFFFFFF00;
 
     FLASH->CTLR |= CR_PAGE_PG;
     while(FLASH->STATR & SR_BSY)
@@ -43,9 +43,9 @@ void FLASH_ProgramPage_Fast(uint32_t pageAddress, uint8_t *data)
 
     while(size)
     {
-        *(uint32_t *)Page_Address = *(uint32_t *)pbuf;
-        Page_Address += 4;
-        pbuf += 1;
+        *(uint32_t *)pageAddress = *(uint32_t *)data;
+        pageAddress += 4;
+        data += 1;
         size -= 1;
         printf("To write %d bytes to %08lx\n", size, pageAddress);
         while(FLASH->STATR & SR_WR_BSY)
