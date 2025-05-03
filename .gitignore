@@ -5,3 +5,4 @@
 *.lst
 *.map
 compile_commands.json
+.vscode/*
