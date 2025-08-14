@@ -56,7 +56,7 @@ int HandleHidUserGetReportSetup( struct _USBState * ctx, tusb_control_request_t 
 #define CMD_INIT 0x07
 
 void jumpToApp() {
-    /*// Disable USBHS
+    // Disable USBHS
     USBHSD->CONTROL &= ~USBHS_UC_DEV_PU_EN;
     USBHSD->CONTROL |= USBHS_UC_CLR_ALL | USBHS_UC_RESET_SIE;
     NVIC_DisableIRQ(USBHS_IRQn);
@@ -70,7 +70,7 @@ void jumpToApp() {
     Delay_Ms(50);
 
     RCC->APB2PCENR &= ~RCC_APB2Periph_GPIOA;
-    RCC->AHBPCENR &= ~(RCC_AHBPeriph_USBHS | RCC_AHBPeriph_DMA1);*/
+    RCC->AHBPCENR &= ~(RCC_AHBPeriph_USBHS | RCC_AHBPeriph_DMA1);
 
     // Reset the system
     NVIC_EnableIRQ(Software_IRQn);
@@ -81,17 +81,12 @@ void handleData() {
     if(lrx < 2) return;
     lrx = 0;
 
-    // Output the first three bytes of the input buffer
-    // printf("handleData: input[0] = %d, input[1] = %d, input[2] = %d\n", input[0], input[1], input[2]);
-
     uint8_t length = input[1];
     uint8_t command = input[2];
 
     uint8_t *data = &input[3];
 
     uint8_t status = 255;
-
-    // printf("handleData: command = %d, length = %d\n", command, length);
 
     switch (command)
     {
